@@ -1,5 +1,6 @@
 defmodule ApiTest.User do
   use ApiTest.Web, :model
+  @derive {Poison.Encoder, expect: [:__meta__]}
 
   schema "users" do
     field :login, :string
@@ -15,6 +16,7 @@ defmodule ApiTest.User do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:login, :email, :password])
+    |> unique_constraint(:email)
     |> validate_required([:login, :email, :password])
   end
 end
